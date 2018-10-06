@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+    <title>登录——说说</title>
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/jumbotron.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 80px;
+            padding-bottom: 20px;
+        }
+        h1 {
+          margin: 0 0 30px;
+          font: 32px Microsoft Yahei;
+        }
+        #error {
+          display: none;
+          margin-top: 20px;
+          font: 20px Microsoft Yahei;
+        }
+    </style>
+
+    
+  </head>
+
+  <body>
+
+      <% include header.ejs %>
+
+    <form class="col-md-4">
+        <div class="form-group">
+          <h1>账号登录</h1>
+          <label for="username">用户名</label>
+          <input type="text" class="form-control" id="username" placeholder="请输入用户名"">
+        </div>
+        <div class="form-group">
+          <label for="password">密码</label>
+          <input type="password" class="form-control" id="password" placeholder="请输入密码"">
+        </div>
+        <button type="button" class="btn btn-default" id="login">登录</button>
+        <div id="error" class="alert alert-danger" role="alert"></div>
+      </form>
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; 2016 Company, Inc.</p>
+      </footer>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script>
+        $("input").focus(()=>{
+          $("#error").fadeOut();
+        })
+        $("#login").click(()=>{
+            $.post("/dologin",{
+                username:$("#username").val(),
+                password:$("#password").val()
+            },(result)=>{
+                if(result=="1"){
+                    alert("登录成功，将自动跳转到首页");
+                    window.location = "/";
+                }else if(result=="-1"){
+                    //用户名不存在
+                    $("#error").fadeIn(0.2);
+                    $("#error").html("用户名不存在");
+                }else if(result=="-2"){
+                    //密码错误，请重新输入
+                    $("#error").fadeIn(0.2);
+                    $("#error").html("密码错误，请重新输入");
+                }else if(result=="-3"){
+                    //服务器错误
+                    $("#error").fadeIn(0.2);
+                    $("#error").html("服务器发生错误");
+                }
+            })
+        })    
+    </script>
+  </body>
+</html>

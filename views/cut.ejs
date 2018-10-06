@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>裁剪头像——说说</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="/css/jquery.Jcrop.css">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.Jcrop.js"></script>
+    <script type="text/javascript" src="/js/xiaoguo.js"></script>
+</head>
+<body>
+
+<!-- 防止图片太大或太小，宽统一设为400px -->
+<img class="lijiacongxiugai" src=<%= avatar %> id="target" alt="" style="width:400px"/>
+<div id="preview-pane">
+    <div class="preview-container">
+        <img src=<%= avatar %> class="jcrop-preview" alt="Preview" />
+    </div>
+</div>
+
+<input type="button" value="确定" id="btn">
+
+
+
+<script type="text/javascript">
+    $("input").click(function () {
+        var w = parseInt($(".jcrop-holder>div:first").css("width"));
+        var h = parseInt($(".jcrop-holder>div:first").css("height"));
+        var x = parseInt($(".jcrop-holder>div:first").css("left"));
+        var y = parseInt($(".jcrop-holder>div:first").css("top"));
+
+        $.get("/docut",{
+            "w" : w,
+            "h" : h,
+            "x" : x,
+            "y" : y
+        },function(result){
+            if(result == 1){
+                alert("修改成功，将自动跳转到首页");
+                window.location = "/";
+            }
+        });
+    });
+</script>
+</body>
+</html>
+
