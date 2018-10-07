@@ -9,23 +9,28 @@ const gm = require("gm");
 
 //首页
 exports.showIndex = (req,res,next)=>{
-    if(req.session.login){
-        db.find("users",{"username":req.session.username},(err,result)=>{
-            res.render("index",{
-                "login": req.session.login?true:false,
-                "username": req.session.login=="1"?req.session.username:" ",
-                "active": "index",
-                "avatar": result[0].avatar||"default.jpg"
-            });
-        })
+    if(req.session.login == "1"){
+        var username = req.session.username;
+        var login = true;
     }else{
-        res.render("index",{
-            "login": req.session.login?true:false,
-            "username": req.session.login=="1"?req.session.username:" ",
-            "active": "index",
-            "avatar": "default.jpg"
-        });
+        var username = "";
+        var login = false;
     }
+
+    db.find("users",{"username":username},(err,result)=>{
+        if(result.length == 0){
+            var avatar = "default.jpg";
+        }else{
+            var avatar = result[0].avatar;
+        }
+        res.render("index",{
+            "login": login,
+            "username": username,
+            "active": "index",
+            "avatar": avatar
+        });
+    })
+    
 }
 //注册页面
 exports.showRegister = (req,res,next)=>{
@@ -46,6 +51,7 @@ exports.doRegister = (req,res,next)=>{
     let password = fields.password;
     // console.log(username+password);
     //查询数据库是否已经存在该用户名
+    //如果不存在，保存注册信息
     db.find("users",{"username":username},(err,result)=>{
         if(err){
             res.send("-3");//服务器错误
@@ -57,7 +63,7 @@ exports.doRegister = (req,res,next)=>{
         }
         // console.log(result.length);
         password = md5(md5(password)+"lijiacong"); //对密码进行加密
-        db.insertOne("users",{"username":username,"password":password},(err,result)=>{
+        db.insertOne("users",{"username":username,"password":password,"avatar":"default.jpg"},(err,result)=>{
             if(err){
                 res.send("-3");//服务器错误
                 return;
@@ -68,7 +74,7 @@ exports.doRegister = (req,res,next)=>{
         })
     })
 
-    //如果不存在，保存注册信息
+    
     });
 }
 //登录页面
@@ -184,3 +190,66 @@ exports.doCut = (req,res,next)=>{
         
     });
 };
+//发表说说业务
+exports.doPublishShuoshuo = (req,res,next)=>{
+    if(req.session.login != 1){
+        res.send("未登录");
+        return;
+    }
+    let username = req.session.username;
+    //获取用户填写的信息
+    var form = new formidable.IncomingForm();
+    form.parse(req, function(err, fields, files) {
+    //获取信息
+    let content = fields.content;
+    db.insertOne("posts",{
+       "username":username,
+       "datetime":new Date(),
+       "content":content
+      },(err,result)=>{
+        if(err){
+            res.send("-3");//服务器错误
+            return;
+        }
+        res.send("1");//成功
+    })
+    })
+}
+exports.getAllShuoshuo = (req,res,next)=>{
+    let page = req.query.page;
+    db.find("posts",{},{"pageamount":12,"page":page,"sort":{"datetime":-1}},(err,result)=>{
+        if(err){
+            res.send("服务器出错啦");
+            return;
+        }
+        let obj = {"result":result};
+        console.log(obj);
+        res.json(obj);
+    })
+}
+//获取用户信息，通过请求传入的用户名获取用户头像
+exports.getUserInfo = (req,res,next)=>{
+    let username = req.query.username;
+    db.find("users",{"username":username},(err,result)=>{
+        if(err){
+            res.send("服务器出错啦");
+            return;
+        }
+        res.send(result);
+    })
+}
+//获取说说总条数
+exports.getShuoshuoAmount = (req,res,next)=>{
+    db.getAllCount("posts",function(count){
+        // console.log(count);
+        res.send(count.toString());//不能直接输出数字，好像会把纯数字当作状态码
+    });
+}
+//显示该用户说说
+exports.showUser = (req,res,next)=>{
+    res.render("user",{
+        "login": req.session.login?true:false,
+        "username": req.session.login=="1"?req.session.username:" ",
+        "active":"myshuoshuo"
+    })
+}

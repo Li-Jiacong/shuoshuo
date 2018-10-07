@@ -14,7 +14,40 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="css/jumbotron.css" rel="stylesheet">
+    <script src="js/underscore-noflect.js"></script>
+    <script src="js/jquery-1.11.3.min.js"></script>
     
+
+    
+    <style>
+      #error {
+          position: absolute;
+          display: none;
+          margin-top: -36px;
+          margin-left: 75px;
+          font: 20px Microsoft Yahei;
+          padding: 5px;
+      }
+      .col-lg-4 {
+        float:right;
+      }
+      h4 {
+        margin-bottom: 20px;
+      }
+      .avatar {
+        border-radius: 50%;
+      }
+      .shuoshuoneirong {
+        height: 50px;
+        overflow: hidden;
+      }
+      .pagination li {
+        display: inline-block;
+      }
+      #allShuoshuo {
+        height: 600px;
+      }
+    </style>
   </head>
 
   <body>
@@ -22,34 +55,74 @@
       <% include header.ejs %>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
+    
     <div class="jumbotron">
-      <div class="container">
-        <h1 style="display: flex; flex-direction: row; align-items: center; font-size: 48px;">
-          <a href="/setAvatar" class="a"><img src=<%= avatar %> style="width: 64px;" alt="" class="avatar"></a>&nbsp;&nbsp;Hello, world!
-        </h1>
-        <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
-      </div>
+      <% if(!login){ %>
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6">
+                <h1 style="display: flex; flex-direction: row; align-items: center; font-size: 48px;">
+                    欢迎！
+                </h1>
+                <br/>
+                <p>说说：分享你想表达的，让全世界都能听到你的心声！</p>
+                <br/>
+                <p><a class="btn btn-primary btn-lg" href="/register" role="button">注册 &raquo;</a></p>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <h4>账号登录</h4>
+                    <label for="username">用户名</label>
+                    <input type="text" class="form-control" id="username" placeholder="请输入用户名"">
+                  </div>
+                  <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" class="form-control" id="password" placeholder="请输入密码"">
+                  </div>
+                  <button type="button" class="btn btn btn-primary btn-lg" id="login">登录</button>
+                  <div id="error" class="alert alert-danger" role="alert"></div>
+                </form>
+            </div>
+          </div>
+        </div>
+      <% }else{ %>
+        <div class="container">
+            <div class="row">
+              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                  <h1 style="display: flex; flex-direction: row; align-items: center; font-size: 48px; margin: 0;">
+                      <a href="/setAvatar" class="a"><img src=<%= avatar %> style="width: 100px;" alt="" class="avatar"></a>
+                  </h1>
+                  <br/>
+                  <p style="margin: 0;">您好,<%= username %></p>
+              </div>
+              <form class="col-lg-8 col-md-8 col-sm-8 col-xs-8 col-lg-offset-1">
+                  <div class="form-group">
+                    <textarea name="content" id="content" class="form-control" rows="4" placeholder="分享你想表达的，让全世界都能听到你的心声！"></textarea>
+                    <button type="button" id="publish" class="btn btn-success" style="margin-top: 20px; float: right">发表</button>
+                  </div> 
+              </form>
+          </div>
+        </div>
+      <% } %>
     </div>
+
 
     <div class="container">
       <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-       </div>
-        <div class="col-md-4">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-        </div>
+      <ul class="pagination">
+          <li>
+            <a href="#" aria-label="">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          
+          <li>
+            <a href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      <div class="row" id="allShuoshuo">
       </div>
 
       <hr>
@@ -61,7 +134,155 @@
 
 
     <!-- Bootstrap core JavaScript-->
-    <script src="js/jquery-1.11.3.min.js"></script>
-    
+    <script type="text/template" id="moban">
+      <div class="col-md-4">
+        <h2><img width="40" class="avatar" src={{=avatar}} alt=""/>&nbsp;&nbsp;{{= username }}</h2>
+          <div class="shuoshuoneirong">
+              <p style="font-size:18px;">{{= content }}</p>
+          </div>
+          <p style="font-size:12px;">{{= datetime }}</p>
+          <p><a class="btn btn-default" href="#" role="button">查看更多 &raquo;</a></p>
+        </div>
+      </script>
+      <script>
+        
+        getPage(0);
+        function getPage(page){
+          var $allShuoshuo = $("#allShuoshuo");
+          $allShuoshuo.html("");
+          let compiled = _.template($("#moban").html());
+          $.get("/getAllShuoshuo?page="+page,(result)=>{
+            // console.log(result.result);
+            iterator(0);
+            function iterator(i) {
+              if(i == result.result.length){
+                return;
+              }
+              let username = result.result[i].username;
+              $.get("/getUserInfo?username="+username,(result2)=>{
+                result.result[i].avatar = result2[0].avatar;
+                console.log(result.result[i]);
+                var htmlString = compiled(result.result[i]);
+                $allShuoshuo.append(htmlString);
+                iterator(++i);//千万不要写成i++
+              })
+            }
+            
+          });
+          
+        }
+        //分页效果
+        fenye();
+        $(".pagination li").eq(0).attr("class","active");
+        function fenye(){
+          $.get("/getShuoshuoAmount",(result)=>{
+          let dangqianyema = 1;
+          let pageAmount = Math.ceil(result/12);  //总页数/每页页数 向上取整
+          $(".pagination").html("");
+          $(".pagination").append("<li><a href='javascript:void(0);' aria-label=''><span aria-hidden='true'>&laquo;</span></a></li>");
+          for(let i=0; i<pageAmount; i++){
+            $(".pagination").append("<li><a href='javascript:void(0);'>"+(i+1)+"</a></li>");
+          };
+          $(".pagination").append("<li><a href='javascript:void(0);' aria-label='Next'><span aria-hidden='true'>&raquo;</span></a></li>");
+          $(".pagination li").eq(1).attr("class","active");//也可以用addClass啦，只不过刚好想用这个练下手
+          //点击跳转到第几页
+          $(".pagination li").click(function(){
+            let page = parseInt($(this).index()-1); //因为page从0开始算起，但是index因为有个前一页的也是li所以你懂的
+            if(page == -1){ //点击前一页按钮
+              if(dangqianyema==1){  //已经是第一页
+                $(this).addClass("disabled");
+              }else{  //不是第一页，需要向前跳转一页
+                $(".pagination li").eq(parseInt(dangqianyema-1)).addClass("active").siblings().removeClass();
+                page = dangqianyema-2;
+                dangqianyema = page+1;
+                getPage(page);
+              }
+            }else if(page == pageAmount){ //点击后一页按钮
+              if(dangqianyema== pageAmount){  //已经是最后一页
+                $(this).addClass("disabled");
+              }else{  //不是最后一页，需要向后跳转一页
+                $(".pagination li").eq(parseInt(dangqianyema+1)).addClass("active").siblings().removeClass();
+                page = dangqianyema;
+                dangqianyema = page+1;
+                getPage(page);
+              }
+            }else{
+              $(this).addClass("active").siblings().removeClass();
+              dangqianyema = page+1;
+              getPage(page);
+            }
+            
+          })
+
+        })
+        };
+        
+
+
+
+        $("input").focus(()=>{
+          $("#error").fadeOut();
+        })
+        $("#login").click(()=>{
+            $.post("/dologin",{
+                username:$("#username").val(),
+                password:$("#password").val()
+            },(result)=>{
+                if(result=="1"){
+                    window.location = "/";
+                }else if(result=="-1"){
+                    //用户名不存在
+                    $("#error").fadeIn(0.2);
+                    $("#error").html("用户名不存在");
+                }else if(result=="-2"){
+                    //密码错误，请重新输入
+                    $("#error").fadeIn(0.2);
+                    $("#error").html("密码错误，请重新输入");
+                }else if(result=="-3"){
+                    //服务器错误
+                    $("#error").fadeIn(0.2);
+                    $("#error").html("服务器发生错误");
+                }
+            })
+        })
+        $("#publish").click(()=>{
+            let content = $("#content").val();
+            $("#content").val("");
+            $.post("/publishShuoshuo",{
+                "content": content
+            },(result)=>{
+                  if(result == "1"){
+                    var $allShuoshuo = $("#allShuoshuo");
+                    $allShuoshuo.html("");
+                    let compiled = _.template($("#moban").html());
+                    $.get("/getAllShuoshuo?page=0",(result)=>{
+                      fenye();
+                      // console.log(result.result);
+                      iterator(0);
+                      function iterator(i) {
+                        if(i == result.result.length){
+                          return;
+                        }
+                        let username = result.result[i].username;
+                        $.get("/getUserInfo?username="+username,(result2)=>{
+                          result.result[i].avatar = result2[0].avatar;
+                          console.log(result.result[i]);
+                          var htmlString = compiled(result.result[i]);
+                          $allShuoshuo.append(htmlString);
+                          iterator(++i);//千万不要写成i++
+                        })
+                      }
+                      
+                    });
+                  }else if(result=="-3"){
+                  //服务器错误
+                  alert("服务器出错啦");
+                }
+                  
+                }
+            )
+        })
+        
+    </script>
   </body>
 </html>

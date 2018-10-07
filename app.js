@@ -17,7 +17,7 @@ app.use(express.static("./public"));
 app.use(express.static("./avatar"));
 //路由表
 app.get("/",router.showIndex);
-app.get("/egister",router.showRegister);
+app.get("/register",router.showRegister);
 app.post("/doRegister",router.doRegister);
 app.get("/login",router.showLogin);
 app.post("/doLogin",router.doLogin);
@@ -25,5 +25,10 @@ app.get("/setAvatar",router.showSetAvatar);
 app.post("/doSetAvatar",router.doSetAvatar);
 app.get("/cut",router.showCut);
 app.get("/doCut",router.doCut);
+app.post("/publishShuoshuo",router.doPublishShuoshuo);
+app.get("/getAllShuoshuo",router.getAllShuoshuo);
+app.get("/getUserInfo",router.getUserInfo);
+app.get("/getShuoshuoAmount",router.getShuoshuoAmount);
+app.get("/user/:username",router.showUser);
 
 app.listen(3000);

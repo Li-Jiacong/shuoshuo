@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+    <title><%= username %>——说说</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/css/jumbotron.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 80px;
+            padding-bottom: 20px;
+        }
+        h1 {
+          margin: 0 0 30px;
+          font: 32px Microsoft Yahei;
+        }
+        #error {
+          display: none;
+          margin-top: 20px;
+          font: 20px Microsoft Yahei;
+        }
+    </style>
+
+    
+  </head>
+
+  <body>
+
+      <% include header.ejs %>
+
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <h1><%= username %>的个人主页</h1>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; 2016 Company, Inc.</p>
+      </footer>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="/js/jquery-1.11.3.min.js"></script>
+  </body>
+</html>
