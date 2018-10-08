@@ -30,5 +30,6 @@ app.get("/getAllShuoshuo",router.getAllShuoshuo);
 app.get("/getUserInfo",router.getUserInfo);
 app.get("/getShuoshuoAmount",router.getShuoshuoAmount);
 app.get("/user/:username",router.showUser);
+app.get("/userlist",router.getUserlist);
 
 app.listen(3000);

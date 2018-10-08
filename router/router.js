@@ -247,9 +247,36 @@ exports.getShuoshuoAmount = (req,res,next)=>{
 }
 //显示该用户说说
 exports.showUser = (req,res,next)=>{
-    res.render("user",{
-        "login": req.session.login?true:false,
-        "username": req.session.login=="1"?req.session.username:" ",
-        "active":"myshuoshuo"
+    if(req.session.login != 1){
+        res.send("未登录");
+        return;
+    }
+    var username = req.params.username;
+    db.find("posts",{"username":username},(err,result)=>{
+        db.find("users",{"username":username},(err,result2)=>{
+            res.render("user",{
+                "login": true,
+                "username": username,
+                "active":"myshuoshuo",
+                "myShuoshuo": result,
+                "avatar": result2[0].avatar
+            })
+        })
+        
+    })
+    
+}
+exports.getUserlist = (req,res,next)=>{
+    if(req.session.login != 1){
+        res.send("未登录");
+        return;
+    }
+    db.find("users",{},(err,result)=>{
+        res.render("userlist",{
+            "login": true,
+            "username": req.session.username,
+            "active":"userlist",
+            "result":result
+        })
     })
 }

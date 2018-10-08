@@ -247,6 +247,9 @@
         })
         $("#publish").click(()=>{
             let content = $("#content").val();
+            if(!content||/^[ ]+$/.test(content)){ //判断内容是否为空
+              alert("内容不能为空");
+            }
             $("#content").val("");
             $.post("/publishShuoshuo",{
                 "content": content

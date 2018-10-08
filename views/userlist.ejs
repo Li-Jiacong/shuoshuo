@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="/favicon.ico">
-    <title><%= username %>——说说</title>
+    <title>成员列表——说说</title>
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
@@ -30,10 +30,11 @@
         }
         .one {
           padding: 10px;
-          margin: 20px 0;
+          margin: 20px 10px;
           box-shadow: 10px 10px 20px #999;
           color: #eee;
           background-color: rgb(61, 78, 97);
+          
         }
         
     </style>
@@ -47,13 +48,13 @@
 
     <div class="container">
       <!-- Example row of columns -->
-      <h1><img src= "/<%= avatar %>" alt="">&nbsp;&nbsp;&nbsp;<%= username %>的个人主页</h1>
+      <h1>成员列表</h1>
       <div class="row">
-        <% for(let i=0; i<myShuoshuo.length; i++){ %>
-          <div class="one">
-            <p style="font: 20px Microsoft Yahei"><%= myShuoshuo[i].content %></p>
-            <br/>
-            <p style="font: 12px Simsun"><%= myShuoshuo[i].datetime %></p>
+        <% for(let i=0; i<result.length; i++){ %>
+          <div class="one col-lg-3">
+            <a href="/user/<%= result[i].username %>" style="color:#eee;text-decoration: none;">
+              <p style="margin: 0"><img src="/<%= result[i].avatar %>" alt="">&nbsp;&nbsp;&nbsp;&nbsp;<span style="font: 20px Microsoft Yahei;"><%= result[i].username %></span></p>
+            </a>
           </div>
         <% } %>
       </div>
